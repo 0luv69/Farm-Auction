@@ -26,6 +26,7 @@ class Bidder(models.Model):
 
 
 class Product (models.Model):
+    owner_user = models.OneToOneField(Owner, on_delete=models.CASCADE)
     product_slug = models.CharField(max_length=200)
     product_name = models.CharField(max_length=200)
     product_description = models.TextField()
@@ -36,7 +37,6 @@ class Product (models.Model):
     location = models.CharField(max_length=200)
     prodeuct_category = models.CharField(max_length=200, choices=[('Electronics', 'Electronics'), ('Fashion', 'Fashion'), ('Home', 'Home'), ('Sports', 'Sports'), ('Toys', 'Toys')])
     product_date = models.DateTimeField(auto_now_add=True)
-    owner_user = models.OneToOneField(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.product_name
 
