@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from serializer import *
+from .serializer import *
 from django.contrib.auth import authenticate
 import random
 
@@ -22,6 +22,9 @@ class LoginApi(APIView):
         data = request.data 
         username = data.get('username')
         password = data.get('password')
+        if not username or not password:
+            return Response({'error': 'Username & Password Fields is required', 'login': False}, status=status.HTTP_400_BAD_REQUEST)
+        
 
         user = authenticate(username=username, password=password)
         if user is not None:
