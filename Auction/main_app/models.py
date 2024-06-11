@@ -10,33 +10,19 @@ class Bio(models.Model):
     rate = models.DecimalField(max_digits=10, decimal_places=2, default=2)
     is_verified = models.BooleanField(default=False)
     is_owner = models.BooleanField(default=False)
-    # def __str__(self):
-    #     return self.user.username
-    
-    
+    def __str__(self):
+        return self.user.username
     
     
 class Owner(models.Model):
-    bio = models.ForeignKey(Bio, on_delete=models.CASCADE)
-    owner_id = models.CharField(max_length=200)
-    
-    # def __str__(self):
-    #     return self.bio.bio
-
-
-
-
-
-class Bidder(models.Model):
-    bio = models.ForeignKey(Bio, on_delete=models.CASCADE)
-    bidder_id = models.CharField(max_length=200)
-    
+    bio = models.ForeignKey(Bio, on_delete=models.CASCADE)    
     def __str__(self):
         return self.bio.bio
 
-
-
-
+class Bidder(models.Model):
+    bio = models.ForeignKey(Bio, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.bio.bio
 
 
 class Product (models.Model):

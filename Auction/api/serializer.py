@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from main_app.models import Bio
+from main_app.models import *
+import uuid
 
 class BioSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
@@ -16,7 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}, 'email': {'required': True}}
 
     def create(self, validated_data):
-        is_verified = validated_data.pop('is_verified', False)
+        is_owner = validated_data.pop('is_owner', False)
         user = User.objects.create_user(**validated_data)
-        Bio.objects.create(user=user, is_verified=is_verified)
+        bio = Bio.objects.create(user=user, is_owner=is_owner)
+        if is_owner:
+            Owner.objects.create(bio = bio)
+        Bidder.objects.create(bio=bio)    
         return user
