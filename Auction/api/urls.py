@@ -13,4 +13,10 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', RegisterApi.as_view(), name='register'),
     path('login/', LoginApi.as_view(), name='login'),
+
+
+
+
+    path('product/', ProductApi.as_view(), name='ProductApi'),
+    path('get-product/', get_product, name='get_product'),
 ]

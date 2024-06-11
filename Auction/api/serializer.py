@@ -24,3 +24,9 @@ class UserSerializer(serializers.ModelSerializer):
             Owner.objects.create(bio = bio)
         Bidder.objects.create(bio=bio)    
         return user
+    
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields= '__all__'    

@@ -5,10 +5,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializer import *
+from main_app.models import *
 from django.contrib.auth import authenticate
+from rest_framework.decorators import api_view
+
 import random
 
 
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 # Create your views here.
@@ -56,23 +60,37 @@ class RegisterApi(APIView):
 
 
 
+@api_view(['GET'])
+def get_product(request):
+        all_product = Product.objects.all()
+        serializer = ProductSerializer(all_product, many=True)
 
-
+        return Response({
+                'payload' : serializer.data,
+                'Fetched': True
+            },
+            status=200)
 
 
 
 
 #apis
 class ProductApi(APIView):
-    permission_classes = [JWTAuthentication]
     authentication_classes = [JWTAuthentication]
-
-
-    def get(self, request):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'message': 'Product created successfully',
+                'Product': serializer.data
+            }, status=status.HTTP_201_CREATED)
         return Response({
-                'payload' : '',
-                'Message': 'Success Fetched'
-            },
-            status=200)
-    
+            'error': serializer.errors,
+            'Created': False
+        }, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+        
