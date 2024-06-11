@@ -15,6 +15,7 @@ urlpatterns = [
     path('login/', LoginApi.as_view(), name='login'),
 
 
+    path('email-verify/', email_verify_token, name="email_verify_token"),
 
 
     path('product/', ProductApi.as_view(), name='ProductApi'),
